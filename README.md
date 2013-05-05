@@ -6,6 +6,15 @@ An example of using Storm to do realtime data processing.
 
 Install [Leiningen 2][1] first.
 
+### Run Locally
+
+$ lein run -m cia-storm.wordcount
+
+### Submit to Cluster
+
+$ lein do clean, compile, uberjar
+$ storm jar target/cia-storm-0.1.0-SNAPSHOT-standalone.jar cia_storm.wordcount wordcount
+
 ## License
 
 Copyright © 2013 FIXME
