@@ -61,11 +61,11 @@
   (topology
     {"sentence" (spout-spec sentence-spout)}
     {"split" (bolt-spec {"sentence" :shuffle}
-                    split-bolt
-                    :p 3)
+                        split-bolt
+                        :p 3)
      "count" (bolt-spec {"split" ["word"]}
-                     count-bolt
-                     :p 2)}))
+                        count-bolt
+                        :p 2)}))
 
 (defn run-local! []
   (let [cluster (LocalCluster.)]
