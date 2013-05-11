@@ -15,11 +15,28 @@
         (Thread/sleep 1000)
         (emit-spout! collector [(rand-nth sentences)])))))
 
+;(defspout sentence-spout ["sentence"] {:prepare false}
+;  [collector]
+;  (Thread/sleep 1000)
+;  (emit-spout! collector [(rand-nth ["a little brown dog"
+;                                     "the man petted the dog"
+;                                     "four score and seven years ago"
+;                                     "an apple a day keeps the doctor away"])]))
+
+;(defbolt split-bolt ["word"] {:prepare true}
+;  [conf context collector]
+;  (bolt
+;    (execute [tuple]
+;      (let [words (.split (.getString tuple 0) " ")]
+;        (doseq [w words]
+;          (emit-bolt! collector [w])))
+;      (ack! collector tuple))))
+
 (defbolt split-bolt ["word"]
   [tuple collector]
   (let [words (.split (.getString tuple 0) " ")]
     (doseq [w words]
-      (emit-bolt! collector [w] :anchor tuple))
+      (emit-bolt! collector [w]))
     (ack! collector tuple)))
 
 (defbolt count-bolt [] {:prepare true}
