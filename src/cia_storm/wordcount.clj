@@ -12,7 +12,7 @@
                    "an apple a day keeps the doctor away"]]
     (spout
       (nextTuple []
-        (Thread/sleep 1000)
+        (Thread/sleep 100)
         (emit-spout! collector [(rand-nth sentences)])))))
 
 ;(defspout sentence-spout ["sentence"] {:prepare false}
@@ -43,11 +43,19 @@
   [conf context collector]
   (let [counts (atom {})]
     (bolt
+      (prepare [conf context collector]
+        (.start (Thread. (fn []
+                           (while (not (Thread/interrupted))
+                             (logging/info
+                               (clojure.string/join ", "
+                                 (for [[word count] @counts]
+                                   (str word ": " count))))
+                             (reset! counts {})
+                             (Thread/sleep 5000))))))
       (execute [tuple]
         (let [word (.getString tuple 0)]
-          (swap! counts (partial merge-with +) {word 1})
-          (logging/info (pr-str [word (@counts word)]))
-          (ack! collector tuple))))))
+          (swap! counts (partial merge-with +) {word 1}))
+          (ack! collector tuple)))))
 
 (defn mk-topology []
   (topology
