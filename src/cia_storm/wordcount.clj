@@ -55,7 +55,7 @@
       (execute [tuple]
         (let [word (.getString tuple 0)]
           (swap! counts (partial merge-with +) {word 1}))
-          (ack! collector tuple)))))
+        (ack! collector tuple)))))
 
 (defn mk-topology []
   (topology
