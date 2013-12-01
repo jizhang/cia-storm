@@ -8,12 +8,16 @@ Install [Leiningen 2][1] first.
 
 ### Run Locally
 
+```bash
 $ lein run -m cia-storm.wordcount
+```
 
 ### Submit to Cluster
 
+```bash
 $ lein do clean, compile, uberjar
 $ storm jar target/cia-storm-0.1.0-SNAPSHOT-standalone.jar cia_storm.wordcount wordcount
+```
 
 ## License
 
